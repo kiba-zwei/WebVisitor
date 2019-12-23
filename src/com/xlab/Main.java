@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class Main {
+    private static final int TIME_INTERVAL = 1 * 1000;
+
     public static void main(String[] args) {
         tips();
         try {
@@ -34,7 +36,7 @@ public class Main {
     private static void visit(VisitorConfig vc) throws IOException, InterruptedException {
         for (int i = 1; i <= vc.num; i++) {
             CmdProxy.getInstance().openWeb(vc.url);
-            Thread.sleep(10 * 1000);
+            Thread.sleep(TIME_INTERVAL);
             if (i % 10 == 0) {
                 CmdProxy.getInstance().closeWeb();
             }
