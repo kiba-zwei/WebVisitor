@@ -1,0 +1,14 @@
+{
+  "config": [
+    {
+      "count": 10,
+      "time_interval": 10,
+      "url": "https://blog.csdn.net/kiba_zwei/article/details/103645213"
+    },
+    {
+      "count": 10,
+      "time_interval": 10,
+      "url": "https://blog.csdn.net/kiba_zwei/article/details/104176295"
+    }
+  ]
+}
