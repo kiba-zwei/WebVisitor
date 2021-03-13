@@ -15,7 +15,8 @@ public class FileParser {
     public static List<String> read(String path) {
         File file = new File(path);
         List<String> content = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+        try (BufferedReader bufferedReader =
+                     new BufferedReader(new InputStreamReader(new FileInputStream(file), "GBK"))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 content.add(line);
