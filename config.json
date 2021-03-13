@@ -2,8 +2,14 @@
   "config": [
     {
       "count": 100000,
+      "time_interval": 10,
+      "url": "https://blog.csdn.net/kiba_zwei/article/details/103645213"
+    },
+    {
+      "count": 100000,
       "time_interval": 20,
-      "url": "https://learning.sohu.com/"
+      "url": "https://blog.csdn.net/kiba_zwei/article/details/112972395?spm=1001.2014.3001.5501"
     }
-  ]
+  ],
+  "weekend_rest": false
 }
