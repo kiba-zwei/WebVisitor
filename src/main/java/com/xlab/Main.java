@@ -13,7 +13,7 @@ public class Main {
         tips();
         try {
             List<VisitorConfig> configs = VisitorConfig.createConfiges(FileParser.parseConfig());
-            for (VisitorConfig vc : configs) {
+            for (final VisitorConfig vc : configs) {
                 new Thread() {
                     @Override
                     public void run() {
