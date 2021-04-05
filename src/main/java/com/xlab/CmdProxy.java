@@ -1,8 +1,14 @@
 package com.xlab;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class CmdProxy {
+    public static CmdProxy getInstance() {
+        return SingleInstance.INSTANCE;
+    }
+
     /**
      * 使用IE浏览器打开url
      *
@@ -20,10 +26,6 @@ public class CmdProxy {
      */
     public void closeWeb() throws IOException {
         Runtime.getRuntime().exec("taskkill /F /IM iexplore.exe");
-    }
-
-    public static CmdProxy getInstance() {
-        return SingleInstance.INSTANCE;
     }
 
     private CmdProxy() {
