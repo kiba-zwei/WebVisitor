@@ -14,6 +14,9 @@ public class VisitorConfig {
     private static final int DEFAULT_NUM = 10;
     private static final int DEFAULT_INTERVAL = 10;
     private static final int WEEKEND_MULTIPLIER = 10;
+
+    private static final int DAYTIME_MULTIPLIER = 5;
+
     private int num;
     private String url;
     private int interval = 10;
@@ -93,10 +96,12 @@ public class VisitorConfig {
         return url;
     }
 
-    /***
-     * @Description 获取每次刷新时间间隔，如果当日为周末，则刷新时间返回10倍
-
-     * @return int 每次刷新时间间隔，如果当日为周末，则刷新时间返回10倍
+    /**
+     * @Description 获取每次刷新时间间隔
+     * 如果当前时间非7:00-23:00，则刷新时间返回5倍
+     * 如果当日为周末，则刷新时间返回10倍
+     *
+     * @return int 每次刷新时间间隔
      * @author kiba
      * @Datetime 2021/3/13
      */
@@ -104,16 +109,63 @@ public class VisitorConfig {
         if (interval < 0) {
             return DEFAULT_INTERVAL * ONE_SECOND;
         }
+        int tempInterval = dealWithDayTimePunishment(interval);
+        tempInterval = dealWithWeekendPunishment(tempInterval);
+        return tempInterval;
+
+    }
+
+    /**
+     * @Description 进行周末惩罚乘数处理，如果周末惩罚开关打开，且当日为周末，则刷新时间返回10倍
+     *
+     * @param interval: 刷新时间
+     * @return int 进行周末惩罚乘数处理后的刷新时间
+     * @author kiba
+     * @Datetime 2021/4/5
+     */
+    private int dealWithWeekendPunishment(int interval) {
         Calendar calendar = Calendar.getInstance();
         calendar.get(Calendar.DAY_OF_WEEK);
-        int multiplier = multiplierTakeEffect() ? WEEKEND_MULTIPLIER : 1;
+        int multiplier = weekendRestEffect() ? WEEKEND_MULTIPLIER : 1;
         return interval * ONE_SECOND * multiplier;
     }
 
-    private boolean multiplierTakeEffect() {
+    /**
+     * @Description 根据开关值&当日是否为周末，判断是否需要进行周末时间乘数惩罚
+
+     * @return boolean true 需要惩罚
+     * @author kiba
+     * @Datetime 2021/4/5
+     */
+    private boolean weekendRestEffect() {
         int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         boolean isWeekend = dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY;
         return weekendRest && isWeekend;
+    }
+
+    /**
+     * @Description 进行非活跃期处理吗，如果当前时间为非活跃期，则刷新时间返回5倍
+     *
+     * @param interval: 刷新时间
+     * @return int 进行非活跃期处理后的刷新时间
+     * @author kiba
+     * @Datetime 2021/4/5
+     */
+    private int dealWithDayTimePunishment(int interval) {
+        return isActivePeriod() ? interval : interval * DAYTIME_MULTIPLIER;
+    }
+
+    /**
+     * @Description 当前时间7:00-23:00，则认定为活跃时间段
+
+     * @return boolean 7:00-23:00 是活跃时间
+     * @author kiba
+     * @Datetime 2021/4/5
+     */
+    private boolean isActivePeriod() {
+        int hourOfDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        boolean isActivePeriod = hourOfDay >= 7 && hourOfDay <= 23;
+        return isActivePeriod;
     }
 
     public int getCloseWebInterval() {
